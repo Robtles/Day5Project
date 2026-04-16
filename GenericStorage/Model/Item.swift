@@ -5,6 +5,8 @@
 
 import Foundation
 
-struct Item {
-    // TODO: complete
+public struct Item: Decodable {
+    public let id: Int
+    public let name: String
+    public let price: Int
 }

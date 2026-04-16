@@ -9,13 +9,7 @@ enum LocalStorageError: Error {
     case fileNotFound(_ filename: String)
 }
 
-protocol LocalStorage {
-    func getPokemon(withId id: Int) -> Pokemon?
-    func getItem(withId id: Int) -> Item?
-    func getTrainer(withId id: Int) -> Trainer?
-}
-
-final class LocalStorageImpl: LocalStorage {
+final class LocalStorageImpl {
     
     private var items: [Item] = []
     private var pokemons: [Pokemon] = []
@@ -29,35 +23,24 @@ final class LocalStorageImpl: LocalStorage {
         try? loadTrainers()
     }
     
-    // MARK: - Public API
-    
-    func getPokemon(withId id: Int) -> Pokemon? {
-        // TODO: retourner le Pokemon correspondant à cet id
-        nil
-    }
-    
-    func getItem(withId id: Int) -> Item? {
-        // TODO: retourner l'Item correspondant à cet id
-        nil
-    }
-    
-    func getTrainer(withId id: Int) -> Trainer? {
-        // TODO: retourner le Trainer correspondant à cet id
-        nil
-    }
-    
     // MARK: - Private Loading
     
     private func loadPokemons() throws {
-        // TODO: utiliser getURL(forJsonFileName:) et charger les pokemons
+        let jsonURL = try getURL(forJsonFileName: "pokemon")
+        let data = try Data(contentsOf: jsonURL)
+        pokemons = try JSONDecoder().decode([Pokemon].self, from: data)
     }
     
     private func loadItems() throws {
-        // TODO: utiliser getURL(forJsonFileName:) et charger les items
+        let jsonURL = try getURL(forJsonFileName: "item")
+        let data = try Data(contentsOf: jsonURL)
+        items = try JSONDecoder().decode([Item].self, from: data)
     }
     
     private func loadTrainers() throws {
-        // TODO: utiliser getURL(forJsonFileName:) et charger les trainers
+        let jsonURL = try getURL(forJsonFileName: "trainer")
+        let data = try Data(contentsOf: jsonURL)
+        trainers = try JSONDecoder().decode([Trainer].self, from: data)
     }
     
     private func getURL(forJsonFileName filename: String) throws -> URL {
